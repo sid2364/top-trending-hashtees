@@ -1,10 +1,13 @@
 import json
 import sys
 import key_phrases
+try:
+	import config
+except:
+	print("Please put your CONSUMER_KEY and CONSUMER_SECRET in config.py, and try again.")
+	sys.exit()
 from application_only_auth import Client
 
-CONSUMER_KEY = 'VkzGW99K3Ff0gTskwBlGgoo9z' # take from user
-CONSUMER_SECRET = 'J2pl2CDh8QFKUJrfh28QdE4HtxoE13l2071FGJx3B7qxvz9v0e' # take from user
 TWTTR_API = 'https://api.twitter.com/'
 TWTTR_API_VERSION = '1.1'
 TWTTR_QUERY = '/search/tweets.json?q='
@@ -59,7 +62,7 @@ def get_hashtees(search_phrase, since='2012-01-01'):
 	search_phrase = search_phrase.replace(' ', '%20')
 	search_phrase = search_phrase.replace('#', HASHTAG)
 
-	client = Client(CONSUMER_KEY, CONSUMER_SECRET)
+	client = Client(config.CONSUMER_KEY, config.CONSUMER_SECRET)
 
 	if since is not None:
 		since_ = "%20since:"+since
@@ -101,4 +104,6 @@ if __name__ == "__main__":
 		for tag in get_top_n(words, 5):
 			print tag
 	except Exception as e:
-		print("Oops! There was an error: " + str(e))
+		print("\nOops! There was an error: " + str(e))
+	except KeyboardInterrupt as e:
+		print('\nBye!')
